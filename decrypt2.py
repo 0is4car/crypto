@@ -11,7 +11,8 @@ frequency_dict = {k:v for k,v in zip(' '+ascii_lowercase, frequency)}
 
 
 def usage():
-    print("python3 " + __file__ + " [ciphertext] [dictionary]")
+    print("The default wordlist is english_words.txt, you could also specify dictionary by:")
+    print("python3 " + __file__ + " [dictionary]\n")
 
 #Not used in this version
 def words_with_length_two(dict_list):
@@ -118,15 +119,17 @@ def decrypt(dict_list, ciphers):
         brute(dict_list, cipher_list)
 
 def main():
-    if len(sys.argv) != 3:
-        usage()
-        return
 
-    cipher_filename = sys.argv[1]
-    dictionary_filename = sys.argv[2]
+    usage()
+    if len(sys.argv) == 1:
+        dictionary_filename = 'english_words.txt'
+    elif len(sys.argv) == 2:
+        dictionary_filename = sys.argv[1]
+    else:
+        sys.exit()
 
-    with open(cipher_filename) as f:
-        ciphers = [cipher.rstrip('\n') for cipher in f]
+    print("please input ciphertext:\n")
+    ciphers = [cipher.rstrip('\n') for cipher in sys.stdin]
     with open(dictionary_filename) as f:
         dict_list = [l.rstrip('\n') for l in f]
     decrypt(dict_list, ciphers)
